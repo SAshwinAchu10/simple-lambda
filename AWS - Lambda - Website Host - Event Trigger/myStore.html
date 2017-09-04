@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="apigClient.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Welcome to Ashwin Store</h2>
+  <form>
+    <div class="form-group">
+      <label for="name">ID <span style="color:red;">***</span>eg: 1,2...</label>
+      <input type="name" class="form-control" id="name" placeholder="Enter Book ID" name="name">
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div id="results" class="form-style-1" ></div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+var dataresult;
+$(document).ready(function(){
+var apigClient=apigClientFactory.newClient();
+$('form').submit(function(event){
+var formdata={
+'bookid':$('input[name=name]').val()
+};
+var params={
+'bookid':$('input[name=name]').val()
+};
+var body={
+};
+var additionalParams={
+headers:{
+},queryParams:{
+'bookid':$('input[name=name]').val()
+}
+};
+apigClient.booksGet(params,body,additionalParams).then(function(result){
+console.log(result.data);
+dataresult=result.data;
+var resultStr='BookID:<b>'+result.data.Item.bookid+'</b><br>'+'bookName:<b>'+result.data.Item.bookname+'</b><br>'+'Author:<b>'+result.data.Item.author+'<b></br>';
+console.log(resultStr);
+$('#results').html(resultStr);
+}).catch(function(result){
+console.log("error");
+
+});
+return false;
+});
+});
+</script>

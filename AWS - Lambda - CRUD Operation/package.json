@@ -1,0 +1,10 @@
+{
+  "name": "lambda-crud-ashwin",
+  "version": "1.0.0",
+  "description": "CRUD",
+  "dependencies": {
+    "aws-sdk": "2.7.7",
+    "uuid-validate": "0.0.2",
+    "node-uuid": "1.4.7"
+  }
+}

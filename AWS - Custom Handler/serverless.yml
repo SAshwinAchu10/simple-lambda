@@ -1,0 +1,62 @@
+service: lambda-custom-handler 
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+custom:
+  local: false
+  usersTableName: ashwin-env-is-${opt:stage}
+
+functions:
+  hello:
+    handler: handler.router   #this handler contains all methods to run 
+    events:
+      - http:
+          path: resource
+          method: any
+          cors: true
+      - http:
+          path: resource/{userId}
+          method: any
+          cors: true
+    environment:
+      usersTableName: ashwin-env-is-${opt:stage}
+       # functionalities ends by above
+
+
+       # table creation and policies code in below
+resources:          
+  Resources:
+    env:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ashwin-env-is-${opt:stage}
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    DynamoDBIamPolicy:
+          Type: AWS::IAM::Policy
+          DependsOn: env
+          Properties:
+            PolicyName: lambda-dynamodb
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - dynamodb:GetItem
+                    - dynamodb:PutItem
+                    - dynamodb:ListTables
+                    - dynamodb:DeleteItem
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:UpdateItem
+                  Resource: arn:aws:dynamodb:*:*:table/ashwin*
+            Roles:
+              - Ref: IamRoleLambdaExecution

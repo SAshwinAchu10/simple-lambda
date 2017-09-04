@@ -1,0 +1,10 @@
+{
+  "name": "ashwin-crud",
+  "version": "1.0.0",
+  "description": "Serverless CRUD",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^2.0.3"
+  }
+}

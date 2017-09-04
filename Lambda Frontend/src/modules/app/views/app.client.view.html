@@ -1,0 +1,62 @@
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.js"></script>
+<div data-ng-controller="AppController">
+	<form data-ng-submit="companyRegister()"  novalidate>
+		<div class="row">
+			<hr>
+			<center><h1><b>Employee CRUD</b></h1></center>
+		</br>
+			<div class="col-md-8 col-md-offset-1">
+          	       	<div class="form-group">
+              		<input type="text"  name="text" data-ng-model="user.text" class="form-control input-flat" placeholder="name" required/>
+	            </div>
+	        
+	        
+            	
+	            <button class="btn btn-success" type="submit">ADD Employee</button>
+	        </form>
+	      
+ </div>
+<div class="row">
+    	<div class="col-md-9 col-md-offset-1">
+	    	<table class="table">
+				    <thead>
+				      <tr>
+				        <th>NAME</th>
+				        <th>IDENTITY</th>
+				        <th>UPDATE</th>
+				        <th>DELETE</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr ng-repeat="item in a">
+				      	<form name="companyUpdateForm"  novalidate>
+					        <td>
+					        	<div class="col-md-3">
+            						<div class="form-group">
+            							<input type="text" data-ng-model="item.text" name="text" class="form-control input-flat" placeholder="name" required/>
+            						</div>
+            					</div>
+            				</td>
+					        <td>
+					        	<div class="col-md-3">
+            						<div class="form-group">
+            							<input type="text" data-ng-model="item.id" name="name" class="form-control input-flat" placeholder="name" required/>
+            						</div>
+            					</div>
+            				</td>
+            				<td><button class="btn btn-full btn-primary input-flat" ng-click="companyUpdate(item, 
+            					companyUpdateForm)">Update</button></td>
+				        </form>
+				        <td><a href="#" class="btn btn-danger btn-md" ng-click="delete(item.id)">
+          <span class="glyphicon glyphicon-remove"></span> Remove 
+        </a></td>
+				      </tr>
+				    </tbody>
+			</table>
+		</div>
+	</div>
+		
+
+
+		</div>

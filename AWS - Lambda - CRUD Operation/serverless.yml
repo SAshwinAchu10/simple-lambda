@@ -1,0 +1,84 @@
+service: achu
+provider:
+  name: aws
+  runtime: nodejs4.3
+
+custom:
+  local: false
+  usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+
+functions:
+  getUser:
+    handler: index.getUser
+    events:
+      - http:
+          path: users/{userId}
+          method: get
+    environment:
+      usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+  getAllUser:
+    handler: index.getUser
+    events:
+      - http:
+          path: users/allUsers
+          method: get
+    environment:
+      usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+  deleteUser:
+    handler: index.deleteUser
+    events:
+      - http:
+          path: users/{userId}
+          method: delete
+    environment:
+      usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+  createUser:
+    handler: index.createUser
+    events:
+      - http:
+          path: users
+          method: post
+    environment:
+      usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+  updateUser:
+    handler: index.updateUser
+    events:
+      - http:
+          path: users/{userId}
+          method: put
+    environment:
+      usersTableName: ashwin-CRUD-usersTable-${opt:stage}
+resources:          
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ashwin-CRUD-usersTable-${opt:stage}
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    DynamoDBIamPolicy:
+          Type: AWS::IAM::Policy
+          DependsOn: usersTable
+          Properties:
+            PolicyName: lambda-dynamodb
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - dynamodb:GetItem
+                    - dynamodb:PutItem
+                    - dynamodb:ListTables
+                    - dynamodb:DeleteItem
+                    - dynamodb:Query
+                    - dynamodb:UpdateItem
+                  Resource: arn:aws:dynamodb:*:*:table/ashwin-CRUD*
+            Roles:
+              - Ref: IamRoleLambdaExecution
